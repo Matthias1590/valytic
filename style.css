@@ -109,6 +109,33 @@ body {
     font-weight: 600;
 }
 
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+    padding: 18px 0;
+    border-top: 1px solid #e1e1df;
+    border-bottom: 1px solid #e1e1df;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    color: #888;
+    font-size: 12px;
+}
+
+.stat strong {
+    color: #28362e;
+    font-size: 20px;
+    font-weight: 600;
+}
+
 .queue {
     display: flex;
     flex-direction: column;
@@ -223,5 +250,13 @@ code {
 
     .file-top {
         align-items: flex-start;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .stat strong {
+        font-size: 17px;
     }
 }

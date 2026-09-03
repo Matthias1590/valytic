@@ -4,9 +4,14 @@ const fileInput = document.getElementById("file-input");
 const dropzone = document.getElementById("dropzone");
 const queueElement = document.getElementById("queue");
 const pathButton = document.getElementById("path-button");
+const uploaderReplaysElement = document.getElementById("uploader-replays");
+const totalReplaysElement = document.getElementById("total-replays");
+const totalStorageElement = document.getElementById("total-storage");
 
 const replayPath = pathButton.textContent;
 const TOKEN_STORAGE_KEY = "valytic-uploader-token";
+const STATS_CACHE_KEY = "valytic-stats-cache";
+const STATS_CACHE_TTL = 60 * 1000;
 
 const MAX_CONCURRENT_UPLOADS = 1;
 const UPLOAD_INTERVAL = 1000;
@@ -38,6 +43,64 @@ function formatError(error) {
     }
 
     return "Something went wrong.";
+}
+
+
+function formatBytes(bytes) {
+    if (bytes < 1024) {
+        return `${bytes} B`;
+    }
+
+    const units = ["KB", "MB", "GB", "TB"];
+    let value = bytes;
+    let unitIndex = -1;
+
+    while (value >= 1024 && unitIndex < units.length - 1) {
+        value /= 1024;
+        unitIndex++;
+    }
+
+    return `${value.toFixed(value >= 10 ? 0 : 1)} ${units[unitIndex]}`;
+}
+
+
+function renderStats(stats) {
+    uploaderReplaysElement.textContent = stats.uploader.replays;
+    totalReplaysElement.textContent = stats.total.replays;
+    totalStorageElement.textContent = formatBytes(stats.total.bytes);
+}
+
+
+async function loadStats(force = false) {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
+    const cacheKey = `${STATS_CACHE_KEY}-${token || "anonymous"}`;
+    const cachedForToken = JSON.parse(localStorage.getItem(cacheKey) || "null");
+
+    if (!force && cachedForToken?.stats) {
+        renderStats(cachedForToken.stats);
+
+        if (Date.now() - cachedForToken.savedAt < STATS_CACHE_TTL) {
+            return;
+        }
+    }
+
+    const headers = token
+        ? { "Authorization": `Bearer ${token}` }
+        : {};
+
+    const response = await fetch(`${API_BASE}/stats`, { headers });
+
+    if (!response.ok) {
+        throw new Error(`Could not load stats (${response.status})`);
+    }
+
+    const stats = await response.json();
+
+    renderStats(stats);
+    localStorage.setItem(cacheKey, JSON.stringify({
+        savedAt: Date.now(),
+        stats,
+    }));
 }
 
 
@@ -372,5 +435,10 @@ async function processQueue() {
     }
 
     processing = false;
+
+    loadStats(true).catch(() => {});
 }
+
+
+loadStats().catch(() => {});
 
