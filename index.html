@@ -17,7 +17,23 @@
 <body>
     <main class="container">
         <div class="header">
-            <h1 class="brand" aria-label="valytic">valytic</h1>
+            <div class="brand-row">
+                <h1 class="brand" aria-label="valytic">valytic</h1>
+                <section class="stats" aria-label="Replay statistics">
+                    <div class="stat">
+                        <span class="stat-label">Your uploads</span>
+                        <strong id="uploader-replays">0</strong>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Total uploads</span>
+                        <strong id="total-replays">0</strong>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Total storage</span>
+                        <strong id="total-storage">0 B</strong>
+                    </div>
+                </section>
+            </div>
             <p>
                 Upload your VALORANT replays. Located in
                 <button
@@ -29,7 +45,7 @@
                 ><code>%LOCALAPPDATA%\VALORANT\Saved\Demos</code></button>.
             </p>
             <p class="header-hint">
-                Need a replay? Open a friend's Career page in VALORANT to download one, then upload the <code>.vrf</code> file here.
+                Need a replay? Open your or a friend's career page in VALORANT to download them, then upload the <code>.vrf</code> files here.
             </p>
         </div>
 
@@ -60,21 +76,6 @@
                 <span id="share-label">Share valytic</span>
             </button>
         </aside>
-
-        <section class="stats" aria-label="Replay statistics">
-            <div class="stat">
-                <span class="stat-label">Your uploads</span>
-                <strong id="uploader-replays">0</strong>
-            </div>
-            <div class="stat">
-                <span class="stat-label">Total uploads</span>
-                <strong id="total-replays">0</strong>
-            </div>
-            <div class="stat">
-                <span class="stat-label">Total storage</span>
-                <strong id="total-storage">0 B</strong>
-            </div>
-        </section>
 
         <div id="queue" class="queue"></div>
 
