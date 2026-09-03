@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>valytic</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Oxanium:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <div class="header">
+            <h1 class="brand" aria-label="valytic">valytic</h1>
+            <p>
+                Upload your VALORANT replays. Located in
+                <button
+                    class="path-button"
+                    id="path-button"
+                    type="button"
+                    title="Copy replay folder path"
+                ><code>%LOCALAPPDATA%\VALORANT\Saved\Demos</code></button>.
+            </p>
+        </div>
+
+        <label class="dropzone" id="dropzone">
+            <input
+                type="file"
+                id="file-input"
+                accept=".vrf"
+                multiple
+            >
+
+            <div class="dropzone-title">
+                Drop replay files here
+            </div>
+
+            <div class="dropzone-subtitle">
+                or click to browse
+            </div>
+        </label>
+
+        <div id="queue" class="queue"></div>
+
+        <div id="message" class="message"></div>
+
+        <section class="about" aria-labelledby="about-title">
+            <p class="section-label">About valytic</p>
+            <h2 id="about-title">Turning replays into better ways to improve.</h2>
+            <p>
+                valytic collects VALORANT replay files so they can be studied through data analysis.
+                The goal is to build tools that help players understand their games, spot patterns,
+                and make more informed improvements.
+            </p>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
