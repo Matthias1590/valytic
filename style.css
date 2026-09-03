@@ -90,6 +90,25 @@ body {
     font-size: 13px;
 }
 
+.contributor-note {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 18px;
+    padding: 14px 16px;
+    border-left: 3px solid #6b7f72;
+    background: #eef1ed;
+    color: #536158;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.contributor-note strong {
+    color: #28362e;
+    font-size: 14px;
+    font-weight: 600;
+}
+
 .queue {
     display: flex;
     flex-direction: column;

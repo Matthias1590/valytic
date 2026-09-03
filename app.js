@@ -6,6 +6,7 @@ const queueElement = document.getElementById("queue");
 const pathButton = document.getElementById("path-button");
 
 const replayPath = pathButton.textContent;
+const TOKEN_STORAGE_KEY = "valytic-uploader-token";
 
 const MAX_CONCURRENT_UPLOADS = 1;
 const UPLOAD_INTERVAL = 1000;
@@ -112,19 +113,11 @@ dropzone.addEventListener("drop", event => {
 });
 
 
-async function sha256(file) {
+async function md5(file) {
     const buffer = await file.arrayBuffer();
+    const digest = SparkMD5.ArrayBuffer.hash(buffer, true);
 
-    const digest = await crypto.subtle.digest(
-        "SHA-256",
-        buffer
-    );
-
-    const bytes = new Uint8Array(digest);
-
-    return [...bytes]
-        .map(byte => byte.toString(16).padStart(2, "0"))
-        .join("");
+    return btoa(digest);
 }
 
 
@@ -146,6 +139,23 @@ async function createUploaderToken() {
     const body = await response.json();
 
     return body.token;
+}
+
+
+async function getUploaderToken() {
+    const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
+
+    if (storedToken) {
+        return storedToken;
+    }
+
+    const token = await withBackoff(
+        () => createUploaderToken()
+    );
+
+    localStorage.setItem(TOKEN_STORAGE_KEY, token);
+
+    return token;
 }
 
 
@@ -201,7 +211,7 @@ function uploadToR2(url, file, checksum, token, onProgress) {
         xhr.open("PUT", url);
 
         xhr.setRequestHeader(
-            "x-amz-checksum-sha256",
+            "Content-MD5",
             checksum
         );
 
@@ -293,27 +303,14 @@ async function processFile(item) {
         ui.status.textContent = "Checking…";
         ui.status.className = "file-status uploading";
 
-        const hash = await sha256(file);
-
-        /*
-         * This is the checksum R2 will independently verify.
-         */
-        const checksumBytes = Uint8Array.from(
-            hash.match(/.{2}/g),
-            byte => parseInt(byte, 16)
-        );
-
-        const checksum = btoa(
-            String.fromCharCode(...checksumBytes)
-        );
+        const hash = await md5(file);
+        const checksum = hash;
 
         /*
          * Token creation and the upload gate are both
          * retried automatically if Cloudflare rate-limits us.
          */
-        const token = await withBackoff(
-            () => createUploaderToken()
-        );
+        const token = await getUploaderToken();
 
         const uploadUrl = await withBackoff(
             () => requestUpload(
