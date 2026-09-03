@@ -40,14 +40,27 @@ body {
     font-size: 15px;
 }
 
+.header .header-hint {
+    margin-top: 10px;
+    color: #999;
+    font-size: 13px;
+}
+
 .path-button {
+    display: inline;
     margin: 0;
     padding: 0;
     border: 0;
     color: inherit;
     font: inherit;
+    line-height: inherit;
     text-align: left;
+    vertical-align: baseline;
     cursor: pointer;
+}
+
+.path-button code {
+    white-space: nowrap;
 }
 
 .path-button:hover code,
@@ -107,6 +120,26 @@ body {
     color: #28362e;
     font-size: 14px;
     font-weight: 600;
+}
+
+.share-button {
+    align-self: flex-start;
+    margin-top: 4px;
+    padding: 7px 11px;
+    border: 1px solid #b8c5bb;
+    border-radius: 5px;
+    background: transparent;
+    color: #28362e;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.share-button:hover,
+.share-button:focus-visible {
+    border-color: #6b7f72;
+    background: #e2e9e2;
 }
 
 .stats {

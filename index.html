@@ -24,8 +24,12 @@
                     class="path-button"
                     id="path-button"
                     type="button"
+                    data-copy-text="%LOCALAPPDATA%\VALORANT\Saved\Demos"
                     title="Copy replay folder path"
                 ><code>%LOCALAPPDATA%\VALORANT\Saved\Demos</code></button>.
+            </p>
+            <p class="header-hint">
+                Need a replay? Open a friend's Career page in VALORANT to download one, then upload the <code>.vrf</code> file here.
             </p>
         </div>
 
@@ -47,11 +51,14 @@
         </label>
 
         <aside class="contributor-note" aria-label="Contributor benefits">
-            <strong>Share a replay. Help shape what valytic builds.</strong>
+            <strong>More replays mean better tools for everyone.</strong>
             <span>
-                Your uploads help create data-driven ways for the VALORANT community to learn and improve.
-                Replay contributors will get free access to valytic tools as they launch, with light usage limits as the project grows.
+                Every game adds more variety to the data, helping valytic find useful patterns and build tools that make improvement easier.
+                Share the site with other players so the whole community can benefit. Contributors get free access to valytic tools as they launch, with light usage limits as the project grows.
             </span>
+            <button class="share-button" id="share-button" type="button">
+                <span id="share-label">Share valytic</span>
+            </button>
         </aside>
 
         <section class="stats" aria-label="Replay statistics">

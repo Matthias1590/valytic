@@ -7,8 +7,10 @@ const pathButton = document.getElementById("path-button");
 const uploaderReplaysElement = document.getElementById("uploader-replays");
 const totalReplaysElement = document.getElementById("total-replays");
 const totalStorageElement = document.getElementById("total-storage");
+const shareButton = document.getElementById("share-button");
+const shareLabel = document.getElementById("share-label");
 
-const replayPath = pathButton.textContent;
+const replayPath = pathButton.dataset.copyText;
 const TOKEN_STORAGE_KEY = "valytic-uploader-token";
 const STATS_CACHE_KEY = "valytic-stats-cache";
 const STATS_CACHE_TTL = 60 * 1000;
@@ -29,6 +31,35 @@ pathButton.addEventListener("click", async () => {
     setTimeout(() => {
         pathButton.innerHTML = `<code>${replayPath}</code>`;
     }, 1200);
+});
+
+
+shareButton.addEventListener("click", async () => {
+    const shareData = {
+        title: "valytic",
+        text: "Upload your VALORANT replays and help shape tools for the community.",
+        url: window.location.href,
+    };
+
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else {
+            await navigator.clipboard.writeText(window.location.href);
+        }
+
+        shareLabel.textContent = navigator.share ? "Shared" : "Link copied";
+        setTimeout(() => {
+            shareLabel.textContent = "Share valytic";
+        }, 1600);
+    } catch (error) {
+        if (error.name !== "AbortError") {
+            shareLabel.textContent = "Could not share";
+            setTimeout(() => {
+                shareLabel.textContent = "Share valytic";
+            }, 1600);
+        }
+    }
 });
 
 
